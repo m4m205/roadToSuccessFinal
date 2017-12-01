@@ -64,6 +64,7 @@ const bundles = (req ,res)=>{
     if( req.userAuth('/admin/login') ) return;
 
     var page = Math.max(0, req.query.page ? parseInt(req.query.page) : 0);
+        filter = req.cookies.pageFilter ? __Filter( JSON.parse(req.cookies.pageFilter) ) : {};
 
     bundel.find({})
         .select('-bundelEditor')
@@ -77,7 +78,8 @@ const bundles = (req ,res)=>{
                         page: page,
                         pages: count / req.app.configs.admPerPage,
                         row: page * req.app.configs.admPerPage,
-                        success: req.getFlash('success')
+                        success: req.getFlash('success'),
+                        filter: req.cookies.pageFilter ? JSON.parse(req.cookies.pageFilter) : {}
                     });
                 })
             .catch(err => console.log(err));
@@ -229,6 +231,34 @@ const showPreview =(req , res ) => {
 }
 
 
+const apiFilter = (req ,res) => {
+    var filter = __Filter( req.body );
+
+    getList( filter, req.app.configs.admPerPage, 0, (count, result) => {
+        return res.json({
+            result: result,
+            pages: Math.floor(count / req.app.configs.admPerPage)
+        });
+    });
+}
+
+
+
+const __Filter = (filter) => {
+    var resFilter = {};
+    if(filter.lang){
+        resFilter.language = filter.lang
+    }
+
+    if( filter.search.trim() ) {
+        if(filter.onField == 'title'){
+            resFilter.titleName = { "$regex": filter.search, "$options": "i" };
+        } else if ( filter.onField == 'content' ) {
+            resFilter.pageEditor = { "$regex": filter.search, "$options": "i" };
+        }
+    }
+    return resFilter;
+}
 
 module.exports = {
     viewBundel: viewBundel,
@@ -241,5 +271,6 @@ module.exports = {
     showEditBundel: showEditBundel,
     remove: remove,
     editBundel: editBundel,
-    showPreview: showPreview
+    showPreview: showPreview,
+    apiFilter: apiFilter
 };

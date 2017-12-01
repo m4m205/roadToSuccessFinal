@@ -14,12 +14,13 @@
 
                 <%- include('../includes/admin/message'); %>
 
-                <div class="row">
+        <div class="row">
 					<div class="col-md-12">
 
 						<div class="container-fluid">
 							<div class="row">
 								<div class="col-md-12">
+                
                                     <form class="form-horizontal" method="post" action="/admin/bundel<%= !!locals.item ? '/' + item._id : '' %>" name="bundel">
 										<div class="form-group">
 											<label for="bundelName">Name of interviewee</label>

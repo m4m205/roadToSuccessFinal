@@ -19,5 +19,6 @@ router.get('/bundel/:id/:lang', Bundels.api_listInProvince);
 
 // Filter
 router.post('/filter/admin/pages', Pages.apiFilter);
+router.post('/filter/admin/bundels', Bundels.apiFilter);
 
 module.exports = router;
