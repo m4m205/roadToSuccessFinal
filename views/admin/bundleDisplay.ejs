@@ -18,8 +18,22 @@
                       <th>Language</th>
                       <th class="text-right"></th>
                     </tr>
+                    <tr class="hidden" id="template">
+                        <th scope="row">ROW</th><td>NAME</td><td>SLUG</td><td>LANG</td>
+                        <td class="text-right">
+                            <a class="options" target="_blank"  href="/admin/preview/_ID">
+                                <i class="glyphicon glyphicon-new-window text-primary"></i>
+                            </a>
+                            <a class="options" href="/admin/bundels/_ID">
+                              <i class="glyphicon glyphicon-pencil text-warning"></i>
+                            </a>
+                            <a class="options" href="/admin/bundel/delete/_ID">
+                              <i class="glyphicon glyphicon-trash text-danger"></i>
+                            </a>
+                        </td>
+                    </tr>
                   </thead>
-                  <tbody>
+                  <tbody id="listBody">
                     <%  result.forEach( (item, index) => { %>
                     <tr>
                       <th scope="row"><%=  ++row %></th>

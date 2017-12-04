@@ -194,6 +194,8 @@ const getList = (filter, admPerPage, page, cb) => {
         .sort('-createAt')
         .then(result => {
             makepage.count(filter).then( count => cb(count, result) );
+            
+
         })
         .catch(err => console.log(err));
 }

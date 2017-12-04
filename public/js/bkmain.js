@@ -80,7 +80,15 @@ const listGenaration = {
         elem = elem.replace(/_ID/g, val._id );
         return elem;
     },
-    interview: () => {}
+    bundle: (val, index) => {
+        let elem = $('#template').html();
+        elem = elem.replace(/NAME/g, val.name );
+        elem = elem.replace(/SLUG/g, val.publishDate );
+        elem = elem.replace(/LANG/g, val.language );
+        elem = elem.replace(/ROW/g, index );
+        elem = elem.replace(/_ID/g, val._id );
+        return elem;
+    }
 }
 
 const drawPagination = (pages) => {

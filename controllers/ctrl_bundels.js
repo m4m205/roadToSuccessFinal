@@ -233,12 +233,13 @@ const showPreview =(req , res ) => {
 
 const apiFilter = (req ,res) => {
     var filter = __Filter( req.body );
-
+    
     getList( filter, req.app.configs.admPerPage, 0, (count, result) => {
         return res.json({
             result: result,
             pages: Math.floor(count / req.app.configs.admPerPage)
         });
+          console.log(result );
     });
 }
 
@@ -252,12 +253,27 @@ const __Filter = (filter) => {
 
     if( filter.search.trim() ) {
         if(filter.onField == 'title'){
-            resFilter.titleName = { "$regex": filter.search, "$options": "i" };
+            resFilter.name = { "$regex": filter.search, "$options": "i" };
         } else if ( filter.onField == 'content' ) {
-            resFilter.pageEditor = { "$regex": filter.search, "$options": "i" };
+            resFilter.bundelEditor = { "$regex": filter.search, "$options": "i" };
         }
     }
     return resFilter;
+}
+
+const getList = (filter, admPerPage, page, cb) => {
+
+    bundel.find(filter)
+        .select('-bundelEditor')
+        .limit(admPerPage)
+        .skip(admPerPage * page)
+        .sort('-createAt')
+        .then(result => {
+            bundel.count(filter).then( count => cb(count, result) );
+
+
+        })
+        .catch(err => console.log(err));
 }
 
 module.exports = {
